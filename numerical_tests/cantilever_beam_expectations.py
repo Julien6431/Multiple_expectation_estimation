@@ -10,7 +10,7 @@ Created on Mon Aug  1 13:36:05 2022
 import numpy as np
 import openturns as ot
 from tqdm import tqdm
-from cantilver_beam_model import fleche
+from cantilever_beam_model import fleche
 
 import sys
 sys.path.append("../src")

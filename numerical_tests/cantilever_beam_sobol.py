@@ -2,25 +2,21 @@
 """
 Created on Mon Aug  1 13:36:05 2022
 
-@author: jdemange
+@author: Julien Demange-Chryst
 """
 
 #%% Modules
 
 import numpy as np
 import openturns as ot
-import matplotlib.pyplot as plt
-from cantilver_beam_model import fleche
+from SquareF import SquareF
+from cantilever_beam_model import fleche
 
 import sys
-sys.path.append("../distributions")
-from SquareF import SquareF
 sys.path.append("../src")
 from adaptative_CV import multiple_expectations_cv
 
 from tqdm import tqdm
-
-dim=6
 
 #%% Sobol Monte Carlo
 
@@ -64,6 +60,7 @@ def compute_sobol_MC(phi,input_distr,N):
 
 #%%
 
+dim=6
 
 mu_FX,sigma_FX,_ = ot.LogNormalMuSigmaOverMu(556.8,0.08).evaluate()
 distr_FX = ot.LogNormal(mu_FX,sigma_FX)
