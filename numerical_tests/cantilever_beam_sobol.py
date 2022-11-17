@@ -18,7 +18,7 @@ from adaptative_CV import multiple_expectations_cv
 
 from tqdm import tqdm
 
-#%% Sobol Monte Carlo
+#%% Standard Pick-Freeze for estimating the first order Sobol' indices
 
 def compute_sobol_MC(phi,input_distr,N):
     dim = input_distr.getDimension()
@@ -58,7 +58,7 @@ def compute_sobol_MC(phi,input_distr,N):
     return sobols/var_phi,hat_I
 
 
-#%%
+#%% Input distribution
 
 dim=6
 
@@ -76,7 +76,7 @@ input_distr = ot.ComposedDistribution([distr_FX,distr_FY,distr_E,distr_w,distr_t
 r = compute_sobol_MC(fleche,input_distr,10**7)
 
 
-#%% Run algorithms
+#%% Functions for executing the algorithm
 
 def get_ot_func(phi,dim):
     
@@ -91,8 +91,6 @@ def get_ot_func(phi,dim):
             xu[u_arr] = x1[u_arr]
             xu[com_u] = x2[com_u]
             res.append(phi(x1)[0]*phi(xu)[0])
-        # res.append((phi(x1)[0]+phi(x2)[0])/2)
-        # res.append((phi(x1)[0]**2+phi(x2)[0]**2)/2)
         res.append(phi(x1)[0])
         res.append(phi(x1)[0]**2)
         return res
@@ -155,35 +153,20 @@ def run_algorithms(N_tot=10**4,n_rep=10**2,weights=np.ones(dim+2)):
     return sobol_mc,sobol_cv,expectations_mc,expectations_cv,input_distr
 
 
-#%%
+#%% Execution of the algorithm
 
-if __name__ == '__main__':
+n_rep = 2*10**2
+N_tot = 2*10**4
     
-    keys = ["-N_tot=","-n_rep="]         
-                            
-    arguments = {"N_tot" : "20000",
-                 "n_rep" : "200"}    
-                                                                  
-    for i in range(1,len(sys.argv)):                                                                                                       
-        for key in keys:     
-            if sys.argv[i].find(key) == 0:    
-                arguments[key[1:-1]] = sys.argv[i][len(key):]                                                                                          
-                print(f"The Given value is: {sys.argv[i][len(key):]}")                                                                     
-                break   
+sobol_mc,sobol_cv,expectations_mc,expectations_cv,input_distr = run_algorithms(N_tot,n_rep)
+    
+print("Variances expectations: \n")
+print(f"MC : {np.sum(np.var(expectations_mc,axis=0))}")
+print(f"CV : {np.sum(np.var(expectations_cv,axis=0))}")
 
-    n_rep = int(arguments["n_rep"])
-    N_tot = int(arguments["N_tot"])
-        
-    sobol_mc,sobol_cv,expectations_mc,expectations_cv,input_distr = run_algorithms(N_tot,n_rep)
-        
-    
-    print("Variances expectations: \n")
-    print(f"MC : {np.sum(np.var(expectations_mc,axis=0))}")
-    print(f"CV : {np.sum(np.var(expectations_cv,axis=0))}")
-    
-    print("Variances Sobol: \n")
-    print(f"MC : {np.sum(np.var(sobol_mc,axis=0))}")
-    print(f"CV : {np.sum(np.var(sobol_cv,axis=0))}")
+print("Variances Sobol: \n")
+print(f"MC : {np.sum(np.var(sobol_mc,axis=0))}")
+print(f"CV : {np.sum(np.var(sobol_cv,axis=0))}")
     
     
 #%%
@@ -199,18 +182,3 @@ np.savez("data/Cantilever_beam_Sobol.npz",
          sobolCV=sobol_cv,
          espMC=expectations_mc,
          espCV=expectations_cv)
-
-    
-#%%    
-
-
-ref_values = np.load("data/ref_values_cantilever_beam_sobol.npy")
-fig,ax = plt.subplots(2,3,figsize=(15,9))
-for i in range(2):
-    for j in range(3):
-        ax[i,j].boxplot(ref_values[3*i+j].reshape((-1,1)),positions=[0])
-        ax[i,j].boxplot(sobol_mc[:,3*i+j],sym='k+',positions=[.5])
-        ax[i,j].boxplot(sobol_cv[:,3*i+j],sym='k+',positions=[1])
-fig.suptitle("Boxplots Sobol indices Cantilever beam in Gaussian space")
-#fig.savefig("../Figures/Sobol_cantilever_beam_std.pdf",bbox_inches='tight')
-plt.show(block=True)
