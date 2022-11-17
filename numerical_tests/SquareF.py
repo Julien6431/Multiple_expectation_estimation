@@ -2,7 +2,7 @@
 """
 Created on Thu Apr  7 10:52:32 2022
 
-@author: jdemange
+@author: Julien Demange-Chryst
 """
 
 #%% Modules
@@ -10,7 +10,7 @@ Created on Thu Apr  7 10:52:32 2022
 import openturns as ot
 import numpy as np
 
-#%% Class Banana Shape
+#%% Class product distribution fxf
 
 class SquareF:
     def __init__(self,input_distr):
@@ -64,10 +64,3 @@ class SquareF:
             sample.add(distrs[i-1].getSample(int(sample_per_mix[i])))
         
         return sample
-    
-#%%
-
-a = ot.Normal(1)
-b = SquareF(a)
-#c = b.pdf_mixture([ot.Normal(ot.Point([1,1]),ot.CovarianceMatrix(2))],[1,1])
-X = b.mixture_getSample(1000,[ot.Normal(ot.Point([10,10]),ot.CovarianceMatrix(2))],[1,10])
