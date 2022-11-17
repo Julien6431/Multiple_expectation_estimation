@@ -169,15 +169,12 @@ print(f"MC : {np.sum(np.var(sobol_mc,axis=0))}")
 print(f"CV : {np.sum(np.var(sobol_cv,axis=0))}")
     
     
-#%%
+#%% Save data
 
-ref_values = np.load("data/ref_values_cantilever_beam_sobol.npy")
-print(ref_values)
-
-#%%
+ref_values = np.load("data/Cantilever_beam_Sobol.npy")
 
 np.savez("data/Cantilever_beam_Sobol.npz",
-         ref_values=r,
+         ref_values=ref_values,
          sobolMC=sobol_mc,
          sobolCV=sobol_cv,
          espMC=expectations_mc,
