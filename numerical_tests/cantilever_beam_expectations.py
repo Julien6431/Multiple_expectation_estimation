@@ -14,7 +14,7 @@ from cantilever_beam_model import fleche
 
 import sys
 sys.path.append("../src")
-from adaptative_CV import multiple_expectations_cv
+from aISCV_algorithm import multiple_expectations_iscv
 
 
 #%% Input distribution
@@ -100,7 +100,7 @@ for n in tqdm(range(n_rep)):
     MC_mixture[n] = np.mean(Y*W,axis=0)
     
     #Control variates
-    ISCV[n],_,_,_ = multiple_expectations_cv(phi,weights,input_distrs,N_max=N,cross_entropy="SG")
+    ISCV[n],_,_,_ = multiple_expectations_iscv(phi,weights,input_distrs,N_max=N,cross_entropy="SG")
     
 print("\nVariances : \n")
 print(f"MC individual : {np.sum(weights*np.var(MC_individual,axis=0))}")

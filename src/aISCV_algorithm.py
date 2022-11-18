@@ -44,10 +44,10 @@ def get_alpha_star(alpha_0,Y,weights,f_X,h_X,g_curr_distr,beta):
 
 
 
-#%%
+#%% Main algorithm
 
 
-def multiple_expectations_cv(func,weights,input_distr,N_max=10**4,cross_entropy="SG",diag=False):    
+def multiple_expectations_iscv(func,weights,input_distr,N_max=10**4,cross_entropy="SG",diag=False):    
     N1 = N_max//2
     Nk = N1//5
     

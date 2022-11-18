@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 import sys
 sys.path.append("../src")
-from adaptative_CV import multiple_expectations_cv
+from aISCV_algorithm import multiple_expectations_iscv
 
 from tqdm import tqdm
 
@@ -51,7 +51,7 @@ for n in tqdm(range(n_rep)):
     X = np.array(input_distr.getSample(N))
     for j in range(1,J+1):
         MC[n,j-1] = np.mean(X**(2*j))
-    ISCV[n],_,_,_ = multiple_expectations_cv(ot_phi,weights,input_distr,N_max=N,cross_entropy="SG")
+    ISCV[n],_,_,_ = multiple_expectations_iscv(ot_phi,weights,input_distr,N_max=N,cross_entropy="SG")
 
 print("\nVariances : \n")
 print(f"MC : {np.sum(weights*np.var(MC,axis=0))}")
@@ -67,7 +67,7 @@ np.savez("data/Gaussian_moment_10.npz",
 #%%
 
 weights = np.ones(J)/ref_values**2
-hat_I,_,_,g_alphas = multiple_expectations_cv(ot_phi,weights,input_distr,N_max=N,cross_entropy="SG")
+hat_I,_,_,g_alphas = multiple_expectations_iscv(ot_phi,weights,input_distr,N_max=N,cross_entropy="SG")
 
 
 fig,ax = plt.subplots(figsize=(18,12))

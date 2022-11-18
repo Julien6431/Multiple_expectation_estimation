@@ -14,7 +14,7 @@ from cantilever_beam_model import fleche
 
 import sys
 sys.path.append("../src")
-from adaptative_CV import multiple_expectations_cv
+from aISCV_algorithm import multiple_expectations_iscv
 
 from tqdm import tqdm
 
@@ -121,7 +121,7 @@ def compute_sobol(phi,input_distr,N_tot,n_rep,weights):
     
     for n in tqdm(range(n_rep)):
         #with control variates
-        hat_I,X,W = multiple_expectations_cv(func,weights,square_input_distr,N_tot,cross_entropy="SG",diag=False)
+        hat_I,X,W = multiple_expectations_iscv(func,weights,square_input_distr,N_tot,cross_entropy="SG",diag=False)
         expectations_cv[n] = hat_I
         esp_phi = hat_I[-2]
         var_phi = hat_I[-1] - esp_phi**2
