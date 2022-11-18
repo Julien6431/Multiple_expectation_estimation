@@ -90,9 +90,3 @@ ax.legend(legends[:len(g_alphas)],fontsize="40")
 ax.set_title("PDF",fontdict={'fontsize':'40','fontweight' : 'bold','verticalalignment': 'baseline'})
 
 fig.savefig("../Figures/Gaussian_moments_10_example.pdf",bbox_inches='tight',dpi=700)
-
-
-
-
-
-

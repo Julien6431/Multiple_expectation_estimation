@@ -103,7 +103,7 @@ def compute_sobol(phi,input_distr,N_tot,n_rep,weights):
     input_distr_std = ot.Normal(dim)
     square_input_distr = SquareF(input_distr_std)
     
-    def qsdg(u):
+    def standardization(u):
         X = np.zeros(dim)
         for i in range(dim):
             d = input_distr.getMarginal(i)
@@ -112,7 +112,7 @@ def compute_sobol(phi,input_distr,N_tot,n_rep,weights):
                 
         return phi(X)
     
-    func = get_ot_func(qsdg,dim)
+    func = get_ot_func(standardization,dim)
     
     sobol_mc = np.zeros((n_rep,dim))
     sobol_cv = np.zeros((n_rep,dim))
@@ -162,11 +162,11 @@ sobol_mc,sobol_cv,expectations_mc,expectations_cv,input_distr = run_algorithms(N
     
 print("Variances expectations: \n")
 print(f"MC : {np.sum(np.var(expectations_mc,axis=0))}")
-print(f"CV : {np.sum(np.var(expectations_cv,axis=0))}")
+print(f"ISCV : {np.sum(np.var(expectations_cv,axis=0))}")
 
 print("Variances Sobol: \n")
 print(f"MC : {np.sum(np.var(sobol_mc,axis=0))}")
-print(f"CV : {np.sum(np.var(sobol_cv,axis=0))}")
+print(f"ISCV : {np.sum(np.var(sobol_cv,axis=0))}")
     
     
 #%% Save data

@@ -103,11 +103,11 @@ for n in tqdm(range(n_rep)):
     ISCV[n],_,_,_ = multiple_expectations_cv(phi,weights,input_distrs,N_max=N,cross_entropy="SG")
     
 print("\nVariances : \n")
-print(f"MC : {np.sum(weights*np.var(MC_individual,axis=0))}")
-print(f"CV : {np.sum(weights*np.var(ISCV,axis=0))}")
+print(f"MC individual : {np.sum(weights*np.var(MC_individual,axis=0))}")
+print(f"MC mixture : {np.sum(weights*np.var(MC_mixture,axis=0))}")
+print(f"ISCV : {np.sum(weights*np.var(ISCV,axis=0))}")
 
 
-        
 #%% Save data
 
 ref_values = np.load("data/Cantilever_beam_expectations.npz")['ref_values']
