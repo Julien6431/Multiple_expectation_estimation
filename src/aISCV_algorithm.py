@@ -16,29 +16,29 @@ from scipy.optimize import minimize,LinearConstraint,Bounds
 
 def get_alpha_star(alpha_0,Y,weights,f_X,h_X,g_curr_distr,beta):
     """
-    
+    Optimzation procedure to compute the mixture weights.
 
     Parameters
     ----------
-    alpha_0 : TYPE
-        DESCRIPTION.
-    Y : TYPE
-        DESCRIPTION.
-    weights : TYPE
-        DESCRIPTION.
-    f_X : TYPE
-        DESCRIPTION.
-    h_X : TYPE
-        DESCRIPTION.
-    g_curr_distr : TYPE
-        DESCRIPTION.
-    beta : TYPE
-        DESCRIPTION.
+    alpha_0 : NUMPY ARRAY
+        Starting point of the optimization.
+    Y : NUMPY ARRAY
+        Output values of the functions.
+    weights : NUMPY ARRAY
+        Weights of the criterion to minimize.
+    f_X : NUMPY ARRAY
+        Pointwise evaluation of the input PDFs.
+    h_X : NUMPY ARRAY
+        Pointwise evaluation of the auxiliary PFD.
+    g_curr_distr : NUMPY ARRAY
+        Pointwise evaluation of each auxiliary distribution.
+    beta : NUMPY ARRAY
+        Values of the control parameters.
 
     Returns
     -------
-    TYPE
-        DESCRIPTION.
+    NUMPY ARRAY
+        Optimal value for the mixture weights.
 
     """
     
@@ -80,22 +80,28 @@ def multiple_expectations_iscv(func,weights,input_distr,N_max=10**4,cross_entrop
     Parameters
     ----------
     func : OPENTURNS FUNCTION
-        DESCRIPTION.
+        Functions to estimate the expectation.
     weights : NUMPY ARRAY
-        DESCRIPTION.
+        Weights of the criterion to minimize..
     input_distr : OPENTURNS DISTRIBUTION or LIST OF DISTRIBUTIONS
-        DESCRIPTION.
+        Input distributions corresponding to each expectation.
     N_max : INT, optional
         DESCRIPTION. The default is 10**4.
     cross_entropy : STRING, optional
-        DESCRIPTION. The default is "SG".
+        'SG' for single Gaussian auxiliary distributions, 'GM' for Gaussian mixture auxiliary distributions. The default is "SG".
     diag : BOOLEAN, optional
-        DESCRIPTION. The default is False.
+        True if the covariance matrices of the IS distributions are diagonal, else False. The default is False.
 
     Returns
     -------
-    TYPE
-        DESCRIPTION.
+    hat_I_final : NUMPY ARRAY
+        Estimations of the expectations.
+    X_final : OPENTURNS SAMPLE
+        Final sample drawn according to the final sampling distribution.
+    W_final : NUMPY ARRAY
+        Final IS weights.
+    g_alphas : LIST
+        List containing the .
 
     """
     N1 = N_max//2
