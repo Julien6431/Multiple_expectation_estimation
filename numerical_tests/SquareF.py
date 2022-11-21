@@ -14,6 +14,19 @@ import numpy as np
 
 class SquareF:
     def __init__(self,input_distr):
+        """
+        Create the object SquareF.
+
+        Parameters
+        ----------
+        input_distr : OPENTURNS DISTRIBUTION
+            input dsitribution.
+
+        Returns
+        -------
+        None.
+
+        """
         self.input_distr = input_distr
         self.dim = 2*input_distr.getDimension()
         self.name = "SquareF"
@@ -21,18 +34,53 @@ class SquareF:
         
     
     def getDimension(self):
+        """
+        Returns
+        -------
+        INT
+            Dimension of the square distribution.
+
+        """
         return self.dim
     
     def getName(self):
+        """
+        Returns
+        -------
+        STRING
+            Name of the square distribution..
+
+        """
         return self.name
     
     def getSample(self,N):
+        """
+        Generate an i.i.d. N-sample from the square distribution.
+
+        Parameters
+        ----------
+        N : INT
+            Size of the sample.
+
+        Returns
+        -------
+        X : OPENTURNS SAMPLE
+            Sample generated.
+
+        """
         X = self.input_distr.getSample(N)
         Y = self.input_distr.getSample(N)
         X.stack(Y)
         return X
 
     def ot_pdf(self):
+        """
+        Returns
+        -------
+        OPENTURNS FUNCTION
+            PDF of the square distribution.
+
+        """
         def pdf(x):
             xp = np.array(x)
             x1,x2 = xp[:self.dim//2],xp[self.dim//2:]
@@ -40,9 +88,39 @@ class SquareF:
         return ot.PythonFunction(self.dim,1,pdf)
 
     def computePDF(self,x):
+        """
+        Pointwise evaluation of the PDF of the square distribution.
+
+        Parameters
+        ----------
+        x : OPENTURNS POINT
+            Point in which the PDF is computed.
+
+        Returns
+        -------
+        FLOAT
+            Value of the PDF.
+
+        """
         return self.pdf(x)
     
     def pdf_mixture(self,distrs,weights):
+        """
+        Create the PDF of a mixture containing the current distribution.
+
+        Parameters
+        ----------
+        distrs : LIST
+            List of openturns distributions.
+        weights : NUMPY ARRAY
+            Weights of the mixture.
+
+        Returns
+        -------
+        OPENTUNRS FUNCTION
+            PDF of the mixture.
+
+        """
         N_tot = np.sum(weights)
         n_squ,n_mix = weights[0],weights[1:]
         ot_mixture = ot.Mixture(distrs,n_mix)
@@ -53,6 +131,24 @@ class SquareF:
         return ot.PythonFunction(self.dim,1,pdf)
     
     def mixture_getSample(self,N,distrs,weights):
+        """
+        Generate an i.i.d. N-sample distributed from a mixture containing the current distribution.
+
+        Parameters
+        ----------
+        N : INT
+            Size of the sample.
+        distrs : LIST
+            List of openturns distributions.
+        weights : NUMPY ARRAY
+            Weights of the mixture.
+
+        Returns
+        -------
+        sample : OPENTURNS SAMPLE
+            Sample.
+
+        """
         nb_mix = len(weights)
         n_tot = sum(weights)
         norm_weights = [w/n_tot for w in weights]
