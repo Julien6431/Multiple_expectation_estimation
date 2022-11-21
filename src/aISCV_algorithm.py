@@ -15,6 +15,32 @@ from scipy.optimize import minimize,LinearConstraint,Bounds
 #%% Optimisation of alpha
 
 def get_alpha_star(alpha_0,Y,weights,f_X,h_X,g_curr_distr,beta):
+    """
+    
+
+    Parameters
+    ----------
+    alpha_0 : TYPE
+        DESCRIPTION.
+    Y : TYPE
+        DESCRIPTION.
+    weights : TYPE
+        DESCRIPTION.
+    f_X : TYPE
+        DESCRIPTION.
+    h_X : TYPE
+        DESCRIPTION.
+    g_curr_distr : TYPE
+        DESCRIPTION.
+    beta : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    TYPE
+        DESCRIPTION.
+
+    """
     
     nb_esp = len(alpha_0)
     
@@ -48,6 +74,30 @@ def get_alpha_star(alpha_0,Y,weights,f_X,h_X,g_curr_distr,beta):
 
 
 def multiple_expectations_iscv(func,weights,input_distr,N_max=10**4,cross_entropy="SG",diag=False):    
+    """
+    
+
+    Parameters
+    ----------
+    func : OPENTURNS FUNCTION
+        DESCRIPTION.
+    weights : NUMPY ARRAY
+        DESCRIPTION.
+    input_distr : OPENTURNS DISTRIBUTION or LIST OF DISTRIBUTIONS
+        DESCRIPTION.
+    N_max : INT, optional
+        DESCRIPTION. The default is 10**4.
+    cross_entropy : STRING, optional
+        DESCRIPTION. The default is "SG".
+    diag : BOOLEAN, optional
+        DESCRIPTION. The default is False.
+
+    Returns
+    -------
+    TYPE
+        DESCRIPTION.
+
+    """
     N1 = N_max//2
     Nk = N1//5
     

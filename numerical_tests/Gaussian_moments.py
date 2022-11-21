@@ -10,7 +10,6 @@ Created on Wed Nov  9 15:31:11 2022
 
 import numpy as np
 import openturns as ot
-import matplotlib.pyplot as plt
 
 import sys
 sys.path.append("../src")
@@ -63,30 +62,3 @@ np.savez("data/Gaussian_moment_10.npz",
          ref_values=ref_values,
          MC=MC,
          ISCV=ISCV)
-
-#%%
-
-weights = np.ones(J)/ref_values**2
-hat_I,_,_,g_alphas = multiple_expectations_iscv(ot_phi,weights,input_distr,N_max=N,cross_entropy="SG")
-
-
-fig,ax = plt.subplots(figsize=(18,12))
-plt.rcParams["font.weight"] = "bold"
-plt.rcParams["axes.labelweight"] = "bold"
-
-
-xx = np.linspace(-10,10,1001).reshape((-1,1))
-
-legends = ["$\mathcal{N}_1(0,1)$"] + ["$g_{\\alpha_1}$","$g_{\\alpha_2}$","$g_{\\alpha_3}$"]
-
-for i,g in enumerate(g_alphas):
-    yy = np.array(g.computePDF(xx)).flatten()
-    ax.plot(xx,yy,label=legends[i],linewidth=4)
-ax.set_xlabel("x",fontsize="40")
-ax.set_ylabel("PDF",fontsize="40")
-ax.tick_params(axis='x',labelsize='30')
-ax.tick_params(axis='y',labelsize='30')
-ax.legend(legends[:len(g_alphas)],fontsize="40")
-ax.set_title("PDF",fontdict={'fontsize':'40','fontweight' : 'bold','verticalalignment': 'baseline'})
-
-fig.savefig("../Figures/Gaussian_moments_10_example.pdf",bbox_inches='tight',dpi=700)
